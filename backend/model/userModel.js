@@ -3,7 +3,7 @@ const { Schema }= mongoose;
 
 const userSchema= new Schema({
     username:String,
-    emal:{
+    email:{
         type:String,
         required:true,
         unique:true,
