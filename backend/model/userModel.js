@@ -12,7 +12,12 @@ const userSchema= new Schema({
         type:String,
         refreshToken: String,
     
+    },
+    isVarified:{
+        type:Boolean,
+        default:false,
     }
+    
 
 })
 
