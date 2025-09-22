@@ -10,12 +10,15 @@ const userSchema= new Schema({
     },
     password:{
         type:String,
-        refreshToken: String,
     
     },
     isVarified:{
         type:Boolean,
         default:false,
+    },
+    refreshToken:{
+        type:String,
+       default:"",
     }
     
 

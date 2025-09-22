@@ -71,14 +71,23 @@ let registrationController=async( req, res)=>{
 let verificationTokenController= async(req, res)=>{
     // res.send("Verify Here"); 
     const {token} =req.params 
-    console.log(token);
-    
+    // console.log(token);
+   
     try {
         const decoded=jwt.verify(token,process.env.ACCESS_TOKEN_SECRET);
-        console.log(decoded);
+        const userExists=await User.findById(decoded.id);
+
+        if (!userExists){
+            return res.send({error: "Invalid Token"})
+        }
+        userExists.isVarified = true;
+
+        userExists.save()
+        res.send({message: "Email Verified Successfully."})
+
         
     } catch (error) {
-        
+        res.send({error: "Invalid Token or Experied."})
     }
     
     
@@ -88,15 +97,71 @@ let verificationTokenController= async(req, res)=>{
 
 }
 
-    let loginController=(req, res)=>{
-    res.send("Login Here");
+    let loginController= async(req, res)=>{
+            res.send("Login Here");
+            const {email, password}=req.body
+            const userExists=await User.findOne({email:email});
+            if (!userExists){
+            return res.send({error: "Invalid Credential"});
+
+            }
+            if (!userExists.isVarified){
+                return res.send({error: "Please Verify Your Email."});
+
+            }
+
+        const isPasswordMatch= await bcryptjs.compare(password,userExists.password);
+        if (!isPasswordMatch){
+            return res.send({error: "Invalid Credential"})
+        }
+
+        const accessToken=generateAccessToken(userExists);
+        const refreshToken=generateRefreshToken(userExists);
+        userExists.refreshToken=refreshToken;
+
+        await userExists.save();
+
+        res.cookie("refreshToken",refreshToken,{
+            httpOnly:true,
+            secure: false,
+            sameSite: "strict",
+            maxAge: 7*24*60*60*1000     //7 days validation
         
+        })
+        res.send({
+            message: "Login Successful",
+            accessToken: accessToken,
+            username: userExists.username,
+            email: userExists.email,
+        })
+
+    }
+
+    const refreshController=async(req, res)=>{
+        const token=req.cookies.refreshToken;
+        if(!token){
+            return res.send ({error: "No Token Found"})
+            
+        }
+        const userExists=await User.findOne({refreshToken:token});
+        if (!userExists){
+            return res.send({error: "Invalid Token"})
+        }
+        jwt.verify(token,process.env.REFRESH_TOKEN_SECRET,(error,decoded)=>{
+            if (error){
+                return res.send({error: "Invalid Token"})
+            }
+            const accessToken=generateAccessToken(userExists);
+            res.send({accessToken})
+        })
+    
     }
 
 
 module.exports={
     registrationController,
     loginController,
-    verificationTokenController
+    verificationTokenController,
+    refreshController
 
 }
