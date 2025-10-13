@@ -154,14 +154,54 @@ let verificationTokenController= async(req, res)=>{
             const accessToken=generateAccessToken(userExists);
             res.send({accessToken})
         })
+
     
     }
+    const forgotPasswordController=async(req, res)=>{
+        const {email}=req.body;
+        const userExists=await User.findOne({email:email});
+        if (!userExists){
+            return res.send({error: "User not found"})
+        }
+        const resetToken=jwt.sign({id:userExists._id},process.env.ACCESS_TOKEN_SECRET,{expiresIn:"15m"})
+        const resetLink=`${process.env.CLINT_URL}/reset-password/${resetToken}`
+         await transporter.sendMail({
+            from: process.env.EMAIL_USER,
+            to: user.email,
+            subject:`Reset Password`, 
+            html:`<h4> Click to reset password.
+            <a href='${resetLink}'>Reset Password</a></h4>  `
+        })
+        res.send({massage: "Please check email to reset password."})
+    }
+    const resetPasswordController=async(req, res)=>{
+        const token=req.params.token;
+        const {password}=req.body;
+        try {
+            const decoded=jwt.verify(token,process.env.ACCESS_TOKEN_SECRET);
+            const userExists=await User.findById(decoded.id);
+            if (!userExists){
+                return res.send({error: "Invalid Token"})
+            }
+            userExists.password=await bcryptjs.hash(password,10);
+            await userExists.save();
+            res.send({message: "Password Reset Successfully"})
+
+        } catch (error) {
+            res.send({error: "Invalid Token or Experied."})
+        }
+
+    }
+        
 
 
 module.exports={
     registrationController,
     loginController,
     verificationTokenController,
-    refreshController
+    refreshController,
+    forgotPasswordController,
+    resetPasswordController
+
 
 }
