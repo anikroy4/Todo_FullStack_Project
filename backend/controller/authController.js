@@ -57,7 +57,7 @@ let registrationController=async( req, res)=>{
             html:`<h4>  ${user.username} please verify your email.
             <a href='${VerifyLink}'>Verify Mail</a></h4>  `
         })
-        res.send({message:" Registration successful. please check email"});
+        res.send( {message:" Registration successful. please check email"});
         
     } catch (error) {
         console.log("while trying to save in database",error);
