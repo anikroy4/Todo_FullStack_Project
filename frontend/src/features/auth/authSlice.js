@@ -48,7 +48,7 @@ export const reset= createAsyncThunk("auth/reset",async({token, data},{rejectWit
 })
 
 
-export const counterSlice = createSlice({
+export const authSlice = createSlice({
   name: 'auth',
   initialState: {
     user:null,
@@ -88,7 +88,7 @@ export const counterSlice = createSlice({
     })
     .addCase(registration.fulfilled, (state, action) => {
       state.loading = true;
-      state.message=action.payload.message
+      state.message=action.payload.message;
     })
     .addCase(registration.rejected, (state, action) => {
       state.loading = false;})
@@ -103,10 +103,10 @@ export const counterSlice = createSlice({
 
     })
     .addCase(verify.rejected, (state, action) => {
-      state.loading = false;})
+      state.loading = false;
+      state.error=action.payload.error
 
-   
-
+    })
 
 
 
@@ -115,6 +115,6 @@ export const counterSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { increment, decrement, incrementByAmount } = counterSlice.actions
+export const { logout } = counterSlice.actions
 
-export default counterSlice.reducer
+export default authSlice.reducer
