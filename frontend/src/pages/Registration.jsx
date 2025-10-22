@@ -33,8 +33,7 @@ const Registration = () => {
    }
 
   return (
-   <div className="bg-white max-w-4xl flex items-center mx-auto md:min-h-screen p-4">
-      <div className="grid md:grid-cols-3 items-center [box-shadow:0_2px_10px_-3px_rgba(14,14,14,0.3)] rounded-xl overflow-hidden">
+   <div className="bg-[#014743] max-w-full items-center mx-auto md:min-h-screen p-4 md:grid-cols-3  [box-shadow:0_2px_10px_-3px_rgba(14,14,14,0.3)] rounded-xl overflow-hidden">
         {/* <div className="max-md:order-1 flex flex-col justify-center md:space-y-16 space-y-8 max-md:mt-16 min-h-full bg-gradient-to-r from-slate-900 to-slate-700 lg:px-8 px-4 py-4">
           <div>
             <h3 className="text-white text-lg ">Create Your Account</h3>
@@ -46,7 +45,7 @@ const Registration = () => {
           </div>
         </div> */}
 
-        <form className="md:col-span-3 w-full py-6 px-6 sm:px-14 max-w-lg mx-auto">
+      <form className="md:col-span-3 w-full py-6 px-6 sm:px-14 max-w-lg mx-auto">
           <div className="mb-8">
             <h1 className="text-slate-900 text-2xl font-bold items-center text-center">Register Now</h1>
           </div>
@@ -87,8 +86,7 @@ const Registration = () => {
             </button>
           </div>
           <p className="text-slate-600 text-sm mt-6 text-center">Already have an account? <a href="javascript:void(0);" className="text-blue-600 font-medium hover:underline ml-1">Login here</a></p>
-        </form>
-      </div>
+      </form>
     </div>
   )
 }

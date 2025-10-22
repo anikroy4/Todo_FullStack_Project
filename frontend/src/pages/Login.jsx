@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import ManIcon from '../../public/icons/registrationicons/ManIcon'
 import EmailIcon from '../../public/icons/registrationicons/EmailIcon'
 import EyeIcon from '../../public/icons/registrationicons/EyeIcon'
 import { login } from '../features/auth/authSlice'
@@ -32,8 +31,8 @@ const Login = () => {
 
 
   return (
-    <div className="bg-white max-w-4xl flex items-center mx-auto md:min-h-screen p-4">
-      <div className="grid md:grid-cols-3 items-center [box-shadow:0_2px_10px_-3px_rgba(14,14,14,0.3)] rounded-xl overflow-hidden">
+    <div className="bg-[#014743] max-w-full  items-center mx-auto md:min-h-screen p-4 md:grid-cols-3 [box-shadow:0_2px_10px_-3px_rgba(14,14,14,0.3)] rounded-xl overflow-hidden">
+      <div className="">
         {/* <div className="max-md:order-1 flex flex-col justify-center md:space-y-16 space-y-8 max-md:mt-16 min-h-full bg-gradient-to-r from-slate-900 to-slate-700 lg:px-8 px-4 py-4">
           <div>
             <h3 className="text-white text-lg ">Create Your Account</h3>
@@ -76,7 +75,7 @@ const Login = () => {
 
           <div className="mt-8">
             <button type="button" className="w-full py-2.5 px-4 tracking-wider text-sm rounded-md text-white bg-slate-800 hover:bg-slate-900 focus:outline-none cursor-pointer" onClick={handleClick}>
-              Create an account
+              Login
             </button>
           </div>
           <p className="text-slate-600 text-sm mt-6 text-center">Already have an account? <a href="javascript:void(0);" className="text-blue-600 font-medium hover:underline ml-1">Login here</a></p>
