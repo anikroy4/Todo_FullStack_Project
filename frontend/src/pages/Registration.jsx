@@ -85,7 +85,7 @@ const Registration = () => {
               Create an account
             </button>
           </div>
-          <p className="text-slate-600 text-sm mt-6 text-center">Already have an account? <a href="javascript:void(0);" className="text-blue-600 font-medium hover:underline ml-1">Login here</a></p>
+          <p className="text-slate-600 text-sm mt-6 text-center">Already have an account? <a href="/login" className="text-blue-600 font-medium hover:underline ml-1">Login here</a></p>
       </form>
     </div>
   )

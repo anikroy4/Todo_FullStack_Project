@@ -68,7 +68,7 @@ const Login = () => {
             <div className="flex items-center">
               <input id="remember-me" name="remember-me" type="checkbox" className="h-4 w-4 shrink-0 text-blue-600 focus:ring-blue-500 border-slate-300 rounded" />
               <label htmlFor="remember-me" className="ml-3 block text-sm text-slate-600">
-                I accept the <a href="javascript:void(0);" className="text-blue-600 font-medium hover:underline ml-1">Terms and Conditions</a>
+                Remember me <a href="javascript:void(0);" className="text-blue-600 font-medium hover:underline ml-1"></a>
               </label>
             </div>
           </div>
@@ -78,7 +78,7 @@ const Login = () => {
               Login
             </button>
           </div>
-          <p className="text-slate-600 text-sm mt-6 text-center">Already have an account? <a href="javascript:void(0);" className="text-blue-600 font-medium hover:underline ml-1">Login here</a></p>
+          <p className="text-slate-600 text-sm mt-6 text-center">Don't have an account? <a href="/" className="text-blue-600 font-medium hover:underline ml-1">Sign Up Now</a></p>
         </form>
       </div>
     </div>
