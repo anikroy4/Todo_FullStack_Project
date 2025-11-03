@@ -12,7 +12,7 @@ const Login = () => {
   
     const dispatch=useDispatch()
   
-    const {message, error} = useSelector((state)=>state.auth)
+    const {message, error, loading} = useSelector((state)=>state.auth)
   
     const onChangeEmail = (e) => {
       setForm({ ...form, email: e.target.value })
@@ -74,9 +74,14 @@ const Login = () => {
           </div>
 
           <div className="mt-8">
+            {loading ?
+               <button type="button" className="w-full py-2.5 px-4 tracking-wider text-sm rounded-md text-white bg-slate-800 hover:bg-slate-900 focus:outline-none cursor-pointer" >
+              Loading...
+            </button>:
             <button type="button" className="w-full py-2.5 px-4 tracking-wider text-sm rounded-md text-white bg-slate-800 hover:bg-slate-900 focus:outline-none cursor-pointer" onClick={handleClick}>
               Login
             </button>
+            }
           </div>
           <p className="text-slate-600 text-sm mt-6 text-center">Don't have an account? <a href="/" className="text-blue-600 font-medium hover:underline ml-1">Sign Up Now</a></p>
         </form>
