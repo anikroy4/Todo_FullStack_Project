@@ -98,7 +98,7 @@ let verificationTokenController= async(req, res)=>{
 }
 
     let loginController= async(req, res)=>{
-            res.send("Login Here");
+            // res.send("Login Here");
             const {email, password}=req.body
             const userExists=await User.findOne({email:email});
             if (!userExists){
