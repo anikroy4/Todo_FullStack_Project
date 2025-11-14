@@ -84,13 +84,14 @@ export const authSlice = createSlice({
       state.accessToken=action.payload.accessToken
     })
     .addCase(login.rejected, (state, action) => {
-      // state.loading = false;
-      // state.error=action.payload.error ;
-      // state.user=null;
-      // state.accessToken=null;
-      console.log(action.error);
+      state.loading = false;
+      state.error=action.payload.error ;
+      state.user=null;
+      state.accessToken=null;
+      // console.log(action.error);
       
     })
+  
 
     .addCase(registration.pending, (state) => {
       state.loading = true;
