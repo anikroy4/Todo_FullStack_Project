@@ -13,7 +13,7 @@ export const setToken=(token)=>{
 }
 
 api.interceptors.request.use(async (config)=>{
-    console.log("this is api call");
+    // console.log("this is api call");
     if (accessToken){
         const decoded=jwtDecode(accessToken);
         if (decoded.exp*1000<Date.now()){
