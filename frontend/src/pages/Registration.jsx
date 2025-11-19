@@ -1,8 +1,8 @@
 import React,{ useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import ManIcon from '../../public/icons/registrationicons/ManIcon'
-import EmailIcon from '../../public/icons/registrationicons/EmailIcon'
-import EyeIcon from '../../public/icons/registrationicons/EyeIcon'
+import ManIcon from '../../public/icons/registrationicons/ManIcon';
+import EmailIcon from '../../public/icons/registrationicons/EmailIcon';
+import EyeIcon from '../../public/icons/registrationicons/EyeIcon';
 import { registration } from '../features/auth/authSlice'
 const Registration = () => {
   const [form, setForm] = useState({
@@ -34,17 +34,7 @@ const Registration = () => {
 
   return (
    <div className="bg-[#014743] max-w-full items-center mx-auto md:min-h-screen p-4 md:grid-cols-3  [box-shadow:0_2px_10px_-3px_rgba(14,14,14,0.3)] rounded-xl overflow-hidden">
-        {/* <div className="max-md:order-1 flex flex-col justify-center md:space-y-16 space-y-8 max-md:mt-16 min-h-full bg-gradient-to-r from-slate-900 to-slate-700 lg:px-8 px-4 py-4">
-          <div>
-            <h3 className="text-white text-lg ">Create Your Account</h3>
-            <p className="text-[13px] text-slate-300 mt-3 leading-relaxed">Welcome to our registration page! Get started by creating your account.</p>
-          </div>
-          <div>
-            <h3 className="text-white text-lg">Simple & Secure Registration</h3>
-            <p className="text-[13px] text-slate-300 mt-3 leading-relaxed">Our registration process is designed to be straightforward and secure. We prioritize your privacy and data security.</p>
-          </div>
-        </div> */}
-
+        
       <form className="md:col-span-3 w-full py-6 px-6 sm:px-14 max-w-lg mx-auto">
           <div className="mb-8">
             <h1 className="text-slate-900 text-2xl font-bold items-center text-center">Register Now</h1>
@@ -56,6 +46,7 @@ const Registration = () => {
               <div className="relative flex items-center">
                 <input name="name" type="text" onChange={onChangeName} required className="text-slate-900 bg-white border border-slate-300 w-full text-sm pl-4 pr-8 py-2.5 rounded-md outline-blue-500" placeholder="Enter name" />
                 <ManIcon className="w-4 h-4 absolute right-4" />
+                
               </div>
             </div>
             <div>

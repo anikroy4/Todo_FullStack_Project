@@ -74,18 +74,19 @@ export const authSlice = createSlice({
 
     })
     .addCase(login.fulfilled, (state, action) => {
-      state.message=action.payload.message;
+      state.message=action.payload?.message;
       state.loading = false;
       state.user={
-        username:action.payload.username,
-        email:action.payload.email
+        username:action.payload?.username,
+        email:action.payload?.email
 
       }
       state.accessToken=action.payload.accessToken
     })
+
     .addCase(login.rejected, (state, action) => {
       state.loading = false;
-      state.error=action?.payload?.error ;
+      state.error=action.payload?.error ;
       state.user=null;
       state.accessToken=null;
       // console.log(action.error);
@@ -100,11 +101,11 @@ export const authSlice = createSlice({
     })
     .addCase(registration.fulfilled, (state, action) => {
       state.loading = false;
-      state.message=action.payload.message;
+      state.message=action.payload?.message;
     })
     .addCase(registration.rejected, (state, action) => {
       state.loading = false;
-      state.error=action.payload.error ;
+      state.error=action.payload?.error ;
     })
       
     
@@ -116,12 +117,12 @@ export const authSlice = createSlice({
     })
     .addCase(verify.fulfilled, (state, action) => {
         state.loading = false;
-        state.message=action.payload.message;
+        state.message=action.payload?.message;
 
     })
     .addCase(verify.rejected, (state, action) => {
       state.loading = false;
-      state.error=action.payload.error ;
+      state.error=action.payload?.error ;
 
     })
 
@@ -134,13 +135,13 @@ export const authSlice = createSlice({
     })
     .addCase(forgot.fulfilled, (state, action) => {
       state.loading = false;
-      state.message=action.payload.message;
+      state.message=action.payload?.message;
     
     })
 
     .addCase(forgot.rejected, (state, action) => {
       state.loading = false;
-      state.error=action.payload.error;
+      state.error=action.payload?.error;
     })
 
 
@@ -152,11 +153,11 @@ export const authSlice = createSlice({
     })
     .addCase(reset.fulfilled, (state, action) => {
       state.loading = false;
-      state.message=action.payload.message;
+      state.message=action.payload?.message;
     })
     .addCase(reset.rejected, (state, action) => {
       state.loading = false;
-      state.error=action.payload.error ;
+      state.error=action.payload?.error ;
     })
 
 

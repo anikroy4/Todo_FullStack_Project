@@ -10,9 +10,10 @@ const Login = () => {
       password: "",
     })
   
-    const dispatch=useDispatch()
+    const dispatch = useDispatch()
   
     const {message, error, loading} = useSelector((state)=>state.auth)
+    
   
     const onChangeEmail = (e) => {
       setForm({ ...form, email: e.target.value })
@@ -21,6 +22,8 @@ const Login = () => {
     const onChangePassword = (e) => {
       setForm({ ...form, password: e.target.value })
     }
+
+    
   
     
      
@@ -30,20 +33,10 @@ const Login = () => {
      }
 
 
+
   return (
     <div className="bg-[#014743] max-w-full  items-center mx-auto md:min-h-screen p-4 md:grid-cols-3 [box-shadow:0_2px_10px_-3px_rgba(14,14,14,0.3)] rounded-xl overflow-hidden">
       <div className="">
-        {/* <div className="max-md:order-1 flex flex-col justify-center md:space-y-16 space-y-8 max-md:mt-16 min-h-full bg-gradient-to-r from-slate-900 to-slate-700 lg:px-8 px-4 py-4">
-          <div>
-            <h3 className="text-white text-lg ">Create Your Account</h3>
-            <p className="text-[13px] text-slate-300 mt-3 leading-relaxed">Welcome to our registration page! Get started by creating your account.</p>
-          </div>
-          <div>
-            <h3 className="text-white text-lg">Simple & Secure Registration</h3>
-            <p className="text-[13px] text-slate-300 mt-3 leading-relaxed">Our registration process is designed to be straightforward and secure. We prioritize your privacy and data security.</p>
-          </div>
-        </div> */}
-
         <form className="md:col-span-3 w-full py-6 px-6 sm:px-14 max-w-lg mx-auto">
           <div className="mb-8">
             <h1 className="text-slate-900 text-2xl font-bold items-center text-center">Login Now</h1>
