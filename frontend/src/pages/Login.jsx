@@ -1,18 +1,21 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom';
 import EmailIcon from '../../public/icons/registrationicons/EmailIcon'
 import EyeIcon from '../../public/icons/registrationicons/EyeIcon'
 import { login } from '../features/auth/authSlice'
+import { setToken } from '../api';
 
 const Login = () => {
   const [form, setForm] = useState({
-      email: "",
-      password: "",
-    })
+    email: "",
+    password: "",
+  })
+  const navigate = useNavigate();
   
     const dispatch = useDispatch()
   
-    const {message, error, loading} = useSelector((state)=>state.auth)
+    const {message, error, loading, accessToken, user} = useSelector((state)=>state.auth)
     
   
     const onChangeEmail = (e) => {
@@ -28,9 +31,17 @@ const Login = () => {
     
      
     const handleClick=(e)=>{
-      e.preventDefault()
-      dispatch(login(form))
-     }
+      e.preventDefault();
+      dispatch(login(form));
+    }
+
+    useEffect(() => {
+      if (accessToken) {
+        setToken(accessToken);
+        // Redirect to dashboard or home after login
+        navigate('/');
+      }
+    }, [accessToken, navigate]);
 
 
 
@@ -67,16 +78,23 @@ const Login = () => {
           </div>
 
           <div className="mt-8">
-            {loading ?
-               <button type="button" className="w-full py-2.5 px-4 tracking-wider text-sm rounded-md text-white bg-slate-800 hover:bg-slate-900 focus:outline-none cursor-pointer" >
-              Loading...
-            </button>:
-            <button type="button" className="w-full py-2.5 px-4 tracking-wider text-sm rounded-md text-white bg-slate-800 hover:bg-slate-900 focus:outline-none cursor-pointer" onClick={handleClick}>
-              Login
-            </button>
-            }
+            {loading ? (
+              <button type="button" className="w-full py-2.5 px-4 tracking-wider text-sm rounded-md text-white bg-slate-800 hover:bg-slate-900 focus:outline-none cursor-pointer" >
+                Loading...
+              </button>
+            ) : (
+              <button type="button" className="w-full py-2.5 px-4 tracking-wider text-sm rounded-md text-white bg-slate-800 hover:bg-slate-900 focus:outline-none cursor-pointer" onClick={handleClick}>
+                Login
+              </button>
+            )}
           </div>
-          <p className="text-slate-600 text-sm mt-6 text-center">Don't have an account? <a href="/" className="text-blue-600 font-medium hover:underline ml-1">Sign Up Now</a></p>
+          {error && (
+            <div className="mt-4 text-red-600 text-center text-sm font-medium">{error}</div>
+          )}
+          {message && (
+            <div className="mt-4 text-green-600 text-center text-sm font-medium">{message}</div>
+          )}
+          <p className="text-slate-600 text-sm mt-6 text-center">Don't have an account? <a href="/registration" className="text-blue-600 font-medium hover:underline ml-1">Sign Up Now</a></p>
         </form>
       </div>
     </div>

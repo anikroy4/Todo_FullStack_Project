@@ -1,5 +1,6 @@
-import React,{ useState } from 'react'
+import React,{ useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom';
 import ManIcon from '../../public/icons/registrationicons/ManIcon';
 import EmailIcon from '../../public/icons/registrationicons/EmailIcon';
 import EyeIcon from '../../public/icons/registrationicons/EyeIcon';
@@ -11,9 +12,9 @@ const Registration = () => {
     password: "",
   })
 
-  const dispatch=useDispatch()
-
-  const {message, error} = useSelector((state)=>state.auth)
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { message, error, loading } = useSelector((state) => state.auth);
 
   const onChangeEmail = (e) => {
     setForm({ ...form, email: e.target.value })
@@ -27,10 +28,20 @@ const Registration = () => {
     setForm({ ...form, username: e.target.value })
   }
    
-  const handleClick=(e)=>{
-    e.preventDefault()
-    dispatch(registration(form))
-   }
+  const handleClick = (e) => {
+    e.preventDefault();
+    dispatch(registration(form));
+  }
+
+  useEffect(() => {
+    if (message && !error) {
+      // Registration successful, redirect to login after short delay
+      const timer = setTimeout(() => {
+        navigate('/login');
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [message, error, navigate]);
 
   return (
    <div className="bg-[#014743] max-w-full items-center mx-auto md:min-h-screen p-4 md:grid-cols-3  [box-shadow:0_2px_10px_-3px_rgba(14,14,14,0.3)] rounded-xl overflow-hidden">
@@ -72,10 +83,22 @@ const Registration = () => {
           </div>
 
           <div className="mt-8">
-            <button type="button" className="w-full py-2.5 px-4 tracking-wider text-sm rounded-md text-white bg-slate-800 hover:bg-slate-900 focus:outline-none cursor-pointer" onClick={handleClick}>
-              Create an account
-            </button>
+            {loading ? (
+              <button type="button" className="w-full py-2.5 px-4 tracking-wider text-sm rounded-md text-white bg-slate-800 focus:outline-none cursor-pointer" disabled>
+                Creating account...
+              </button>
+            ) : (
+              <button type="button" className="w-full py-2.5 px-4 tracking-wider text-sm rounded-md text-white bg-slate-800 hover:bg-slate-900 focus:outline-none cursor-pointer" onClick={handleClick}>
+                Create an account
+              </button>
+            )}
           </div>
+          {error && (
+            <div className="mt-4 text-red-600 text-center text-sm font-medium">{error}</div>
+          )}
+          {message && (
+            <div className="mt-4 text-green-600 text-center text-sm font-medium">{message} Redirecting to login...</div>
+          )}
           <p className="text-slate-600 text-sm mt-6 text-center">Already have an account? <a href="/login" className="text-blue-600 font-medium hover:underline ml-1">Login here</a></p>
       </form>
     </div>
