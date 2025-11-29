@@ -188,7 +188,7 @@ let verificationTokenController= async(req, res)=>{
             res.send({message: "Password Reset Successfully"})
 
         } catch (error) {
-            res.send({error: "Invalid Token or Experied."})
+            res.send({error: "Invalid Token or Expired."})
         }
 
     }

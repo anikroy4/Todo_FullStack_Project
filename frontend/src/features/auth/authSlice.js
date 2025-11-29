@@ -13,7 +13,7 @@ export const registration= createAsyncThunk("auth/registration",async(data,{reje
 export const login= createAsyncThunk("auth/login",async(data,{rejectWithValue})=>{
     try {
         const res = await authApi.login(data);
-        return  res.data;
+        return  res? res.data:"Login Failed . Please try again.";
     } catch (error) {
         return rejectWithValue(error.response.data)
     }
@@ -22,7 +22,7 @@ export const login= createAsyncThunk("auth/login",async(data,{rejectWithValue})=
 export const verify= createAsyncThunk("auth/verify",async(data,{rejectWithValue})=>{
     try {
         const res= await authApi.verifyEmail(data);
-        return res.data;
+        return res? res.data:"Verify Failed. Please try again.";
     } catch (error) {
         return rejectWithValue(error.response.data)
     }
@@ -31,16 +31,17 @@ export const verify= createAsyncThunk("auth/verify",async(data,{rejectWithValue}
 export const forgot= createAsyncThunk("auth/forgot",async(data,{rejectWithValue})=>{
     try {
         const res= await authApi.forgotPassword(data);
-        return res.data;
+        return res? res.data:"Please check your email for reset link.";
+        
     } catch (error) {
-        return rejectWithValue(error.response.data)
+        return rejectWithValue(error)
     }
 
 })
 export const reset= createAsyncThunk("auth/reset",async({token, data},{rejectWithValue})=>{
     try {
         const res= await authApi.resetPassword(token, data);
-        return res.data;
+        return res? res.data:"Reset Failed. Please try again.";
     } catch (error) {
         return rejectWithValue(error.response.data)
     }
@@ -70,6 +71,7 @@ export const authSlice = createSlice({
     builder
     .addCase(login.pending, (state) => {
       state.loading = true;
+      state.message="Please wait...";
       state.error=null;
 
     })
