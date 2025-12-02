@@ -24,7 +24,7 @@ const ForgotPassword = () => {
         Enter the email associated with your account. We'll send a link to reset
         your password.
       </p>
-      <form action="" onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label htmlFor="email" className="block text-gray-700 mb-2">Email Address</label>
           <input

@@ -167,7 +167,7 @@ let verificationTokenController= async(req, res)=>{
         const resetLink=`${process.env.CLINT_URL}/reset-password/${resetToken}`
          await transporter.sendMail({
             from: process.env.EMAIL_USER,
-            to: user.email,
+            to: userExists.email,
             subject:`Reset Password`, 
             html:`<h4> Click to reset password.
             <a href='${resetLink}'>Reset Password</a></h4>  `
