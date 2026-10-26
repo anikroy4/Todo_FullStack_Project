@@ -1,104 +1,148 @@
-import React, { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom';
-import EmailIcon from '../../public/icons/registrationicons/EmailIcon'
-import EyeIcon from '../../public/icons/registrationicons/EyeIcon'
-import { login } from '../features/auth/authSlice'
-import { setToken } from '../api';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, Link } from 'react-router-dom';
+import { login, clearError, clearMessage } from '../features/auth/authSlice';
 
 const Login = () => {
   const [form, setForm] = useState({
-    email: "",
-    password: "",
-  })
+    email: '',
+    password: '',
+  });
+  const [showPassword, setShowPassword] = useState(false);
+
   const navigate = useNavigate();
-  
-    const dispatch = useDispatch()
-  
-    const {message, error, loading, accessToken, user} = useSelector((state)=>state.auth)
-    
-  
-    const onChangeEmail = (e) => {
-      setForm({ ...form, email: e.target.value })
+  const dispatch = useDispatch();
+
+  const { message, error, loading, accessToken, user } = useSelector(
+    (state) => state.auth
+  );
+
+  useEffect(() => {
+    dispatch(clearError());
+    dispatch(clearMessage());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (accessToken || user) {
+      navigate('/', { replace: true });
     }
-  
-    const onChangePassword = (e) => {
-      setForm({ ...form, password: e.target.value })
-    }
+  }, [accessToken, user, navigate]);
 
-    
-  
-    
-     
-    const handleClick=(e)=>{
-      e.preventDefault();
-      dispatch(login(form));
-    }
-
-    useEffect(() => {
-      if (accessToken) {
-        setToken(accessToken);
-        // Redirect to dashboard or home after login
-        navigate('/');
-      }
-    }, [accessToken, navigate]);
-
-
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!form.email || !form.password) return;
+    dispatch(login(form));
+  };
 
   return (
-    <div className="bg-[#014743] max-w-full  items-center mx-auto md:min-h-screen p-4 md:grid-cols-3 [box-shadow:0_2px_10px_-3px_rgba(14,14,14,0.3)] rounded-xl overflow-hidden">
-      <div className="">
-        <form className="md:col-span-3 w-full py-6 px-6 sm:px-14 max-w-lg mx-auto">
-          <div className="mb-8">
-            <h1 className="text-slate-900 text-2xl font-bold items-center text-center">Login Now</h1>
+    <div className="min-h-screen bg-[#fafafa] flex flex-col justify-center items-center px-4 py-12 antialiased">
+      <div className="w-full max-w-sm">
+        {/* Brand Header */}
+        <div className="text-center mb-8">
+          <div className="w-11 h-11 rounded-2xl bg-zinc-900 text-white font-bold text-lg flex items-center justify-center mx-auto mb-3 shadow-xs">
+            ✓
           </div>
+          <h1 className="text-2xl font-bold tracking-tight text-zinc-900">
+            Sign in to your account
+          </h1>
+          <p className="text-xs text-zinc-500 mt-1.5">
+            Minimal, fast, and organized task management
+          </p>
+        </div>
 
-          <div className="space-y-6">
-            
+        {/* Card */}
+        <div className="bg-white border border-zinc-200/90 rounded-2xl p-6 sm:p-8 shadow-xs">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Email Field */}
             <div>
-              <label className="text-slate-900 text-sm font-medium mb-2 block">Email</label>
-              <div className="relative flex items-center">
-                <input name="email" type="email" onChange={onChangeEmail} required className="text-slate-900 bg-white border border-slate-300 w-full text-sm pl-4 pr-8 py-2.5 rounded-md outline-blue-500" placeholder="Enter email" />
-                <EmailIcon className="w-4 h-4 absolute right-4" />
-              </div>
-            </div>
-            <div>
-              <label className="text-slate-900 text-sm font-medium mb-2 block">Password</label>
-              <div className="relative flex items-center">
-                <input name="password" type="password" onChange={onChangePassword} required className="text-slate-900 bg-white border border-slate-300 w-full text-sm pl-4 pr-8 py-2.5 rounded-md outline-blue-500" placeholder="Enter password" />
-                <EyeIcon className="w-4 h-4 absolute right-4 cursor-pointer" />
-              </div>
-            </div>
-            <div className="flex items-center">
-              <input id="remember-me" name="remember-me" type="checkbox" className="h-4 w-4 shrink-0 text-blue-600 focus:ring-blue-500 border-slate-300 rounded" />
-              <label htmlFor="remember-me" className="ml-3 block text-sm text-slate-600">
-                Remember me <a href="javascript:void(0);" className="text-blue-600 font-medium hover:underline ml-1"></a>
+              <label className="block text-xs font-semibold text-zinc-700 mb-1.5">
+                Email Address
               </label>
+              <input
+                type="email"
+                required
+                value={form.email}
+                onChange={(e) => setForm({ ...form, email: e.target.value })}
+                placeholder="name@example.com"
+                className="w-full text-sm px-3.5 py-2.5 bg-zinc-50/50 border border-zinc-200 rounded-xl text-zinc-900 placeholder-zinc-400 outline-none focus:bg-white focus:border-zinc-800 transition"
+              />
             </div>
-          </div>
 
-          <div className="mt-8">
-            {loading ? (
-              <button type="button" className="w-full py-2.5 px-4 tracking-wider text-sm rounded-md text-white bg-slate-800 hover:bg-slate-900 focus:outline-none cursor-pointer" >
-                Loading...
-              </button>
-            ) : (
-              <button type="button" className="w-full py-2.5 px-4 tracking-wider text-sm rounded-md text-white bg-slate-800 hover:bg-slate-900 focus:outline-none cursor-pointer" onClick={handleClick}>
-                Login
-              </button>
+            {/* Password Field */}
+            <div>
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="block text-xs font-semibold text-zinc-700">
+                  Password
+                </label>
+                <Link
+                  to="/forgot-password"
+                  className="text-xs text-zinc-500 hover:text-zinc-900 transition"
+                >
+                  Forgot?
+                </Link>
+              </div>
+              <div className="relative">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  required
+                  value={form.password}
+                  onChange={(e) => setForm({ ...form, password: e.target.value })}
+                  placeholder="••••••••"
+                  className="w-full text-sm px-3.5 py-2.5 pr-10 bg-zinc-50/50 border border-zinc-200 rounded-xl text-zinc-900 placeholder-zinc-400 outline-none focus:bg-white focus:border-zinc-800 transition"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-2.5 text-zinc-400 hover:text-zinc-600 text-xs cursor-pointer"
+                >
+                  {showPassword ? 'Hide' : 'Show'}
+                </button>
+              </div>
+            </div>
+
+            {/* Error Message */}
+            {error && (
+              <div className="p-3 bg-rose-50 border border-rose-200/70 text-rose-700 text-xs rounded-xl leading-relaxed">
+                {error}
+              </div>
             )}
+
+            {/* Success Message */}
+            {message && !error && (
+              <div className="p-3 bg-emerald-50 border border-emerald-200/70 text-emerald-700 text-xs rounded-xl leading-relaxed">
+                {message}
+              </div>
+            )}
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full mt-2 py-2.5 px-4 bg-zinc-900 text-white text-sm font-medium rounded-xl hover:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:ring-offset-1 transition disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer flex items-center justify-center gap-2"
+            >
+              {loading && (
+                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              )}
+              <span>{loading ? 'Signing in...' : 'Sign In'}</span>
+            </button>
+          </form>
+
+          {/* Footer Link */}
+          <div className="mt-6 pt-5 border-t border-zinc-100 text-center">
+            <p className="text-xs text-zinc-500">
+              Don't have an account?{' '}
+              <Link
+                to="/register"
+                className="font-medium text-zinc-900 hover:underline"
+              >
+                Sign up
+              </Link>
+            </p>
           </div>
-          {error && (
-            <div className="mt-4 text-red-600 text-center text-sm font-medium">{error}</div>
-          )}
-          {message && (
-            <div className="mt-4 text-green-600 text-center text-sm font-medium">{message}</div>
-          )}
-          <p className="text-slate-600 text-sm mt-6 text-center">Don't have an account? <a href="/registration" className="text-blue-600 font-medium hover:underline ml-1">Sign Up Now</a></p>
-        </form>
+        </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;

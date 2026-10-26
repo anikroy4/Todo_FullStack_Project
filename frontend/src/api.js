@@ -1,30 +1,69 @@
-import axios from "axios";
-import {jwtDecode} from "jwt-decode";
+import axios from 'axios';
+import { jwtDecode } from 'jwt-decode';
 
-const api=axios.create({
-    baseURL:"http://localhost:8000/api/",
-    withCredentials:true, // This is for send cookies permission
+const api = axios.create({
+  baseURL: 'http://localhost:8000/api/',
+  withCredentials: true,
+});
 
-})
+let accessToken = localStorage.getItem('todo_token') || null;
 
-let accessToken=null;
-export const setToken=(token)=>{
-    accessToken=token;
-}
+export const setToken = (token) => {
+  accessToken = token;
+  if (token) {
+    localStorage.setItem('todo_token', token);
+  } else {
+    localStorage.removeItem('todo_token');
+  }
+};
 
-api.interceptors.request.use(async (config)=>{
-    // console.log("this is api call");
-    if (accessToken){
-        const decoded=jwtDecode(accessToken);
-        if (decoded.exp*1000<Date.now()){
-            const res= await api.post("/auth/refresh")
-            accessToken=res.data.accessToken;
-            
+export const getToken = () => accessToken;
+
+api.interceptors.request.use(async (config) => {
+  if (accessToken) {
+    try {
+      const decoded = jwtDecode(accessToken);
+      if (decoded.exp && decoded.exp * 1000 < Date.now()) {
+        try {
+          const res = await axios.post(
+            'http://localhost:8000/api/auth/refresh',
+            {},
+            { withCredentials: true }
+          );
+          if (res.data?.accessToken) {
+            accessToken = res.data.accessToken;
+            setToken(accessToken);
+          }
+        } catch (refreshErr) {
+          // Token refresh failed
+          setToken(null);
         }
-        config.headers.Authorization=`Bearer ${accessToken}`;
+      }
+    } catch (e) {
+      // Decode error
     }
-    return config;
-    
-})
- 
+
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
+    }
+  }
+  return config;
+});
+
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      // Unauthorized, clear token if session expired
+      if (
+        error.config?.url !== '/auth/login' &&
+        error.config?.url !== '/auth/registration'
+      ) {
+        setToken(null);
+      }
+    }
+    return Promise.reject(error);
+  }
+);
+
 export default api;
